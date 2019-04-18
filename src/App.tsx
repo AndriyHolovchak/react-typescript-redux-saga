@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from 'react-redux';
+import createStore from './models/store';
+import history from "./history";
+import { setAuthHeader } from './utils/authHeaderHelper';
+import routes from './routes';
+import './App.scss';
+
+
+const token = localStorage.token;
+const userName = localStorage.userName;
+let defaultState = {};
+if (token) {
+  // Set auth header
+  setAuthHeader(token);
+  defaultState = {
+    auth: {
+      loggedIn: true,
+      pending: false,
+      userName,
+    }
+  }
+}
+
+const store = createStore(defaultState);
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          {routes(history)}
+        </div>
+      </Provider>
     );
   }
 }
