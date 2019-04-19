@@ -12,7 +12,7 @@ const AppSideBar: SFC<Props> = ({ onSignOutClick, userName }) => {
     <div
       style={{
         padding: "10px",
-        width: "200px",
+        minWidth: "200px",
         background: "#f0f0f0",
       }}
     >
